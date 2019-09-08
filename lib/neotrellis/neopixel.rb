@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 
 class NeoPixel
 	attr_reader :brightness

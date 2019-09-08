@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 
 # TODO setup logger
 # TODO debug flag

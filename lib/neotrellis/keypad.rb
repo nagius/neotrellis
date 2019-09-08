@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 
 # TODO renommer EDGE_* en KEY_PRESSED
 # TODO doc avec event et sans event
@@ -7,7 +6,7 @@
 
 # Check function a passer en private 
 
-require_relative '../../simple-gpio/lib/gpio'  # TODO gem
+require 'ya_gpio'
 
 
 class Keypad
@@ -70,8 +69,8 @@ class Keypad
 		@interrupt_enabled=true
 		@seesaw.write(KEYPAD_BASE, KEYPAD_INTENSET, 0x01)
 
-		@gpio = GPIO.new(pin, GPIO::INPUT)
-		@gpio.set_interrupt(GPIO::EDGE_FALLING) do 
+		@gpio = YaGPIO.new(pin, YaGPIO::INPUT)
+		@gpio.set_interrupt(YaGPIO::EDGE_FALLING) do 
 			puts "DEBUG Interrupt received." if @debug
 			sync
 		end
@@ -88,11 +87,11 @@ class Keypad
 	end
 
 	def wait_for_event
-		GPIO::wait([@gpio])
+		YaGPIO::wait([@gpio])
 	end
 
 	def resume
-		GPIO::resume
+		YaGPIO::resume
 	end
 
 	class KeyEvent

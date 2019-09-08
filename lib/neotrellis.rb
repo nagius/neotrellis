@@ -2,6 +2,6 @@
 
 # TODO verifier gem
 
-require_relative './seesaw'
-require_relative './neopixel'
-require_relative './keypad'
+require_relative './neotrellis/seesaw'
+require_relative './neotrellis/neopixel'
+require_relative './neotrellis/keypad'
