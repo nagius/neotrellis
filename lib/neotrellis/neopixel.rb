@@ -60,6 +60,7 @@ module Neotrellis
 			show if @autoshow
 		end
 
+# TODO range check
 		class Color
 			attr_accessor :r, :g, :b
 

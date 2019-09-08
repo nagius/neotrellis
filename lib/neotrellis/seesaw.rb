@@ -7,6 +7,7 @@
 # TODO verifier assert boolean
 
 # Check function a passer en private 
+# TODO read_raw en private
 
 require 'i2c'
 require 'pp'
@@ -49,7 +50,9 @@ module Neotrellis
 		# Trigger a software reset of the SeeSaw chip
 		def sw_reset()
 			write(STATUS_BASE, STATUS_SWRST, 0xFF)
-			sleep(0.5)
+
+			# Give some time to the device to reset (but not when testing)
+			sleep(0.5) unless testing?
 
 			chip_id = read_byte(STATUS_BASE, STATUS_HW_ID)
 
@@ -82,6 +85,11 @@ module Neotrellis
 			@i2c.write(@addr, base_reg, function_reg, *data)
 		end
 
+		private
+
+		def testing?
+			ENV['RSPEC_TEST']&.downcase == 'true'
+		end
 	end
 end
 
