@@ -82,8 +82,17 @@ RSpec.describe Neotrellis::Keypad do
 		expect(keypad.interrupt?).to be false
 	end
 
+	it 'raise if wait for an event with not interrupt' do
+		expect{keypad.wait_for_event}.to raise_error(RuntimeError)
+	end
+
 	it 'wait for an event' do
+		allow(YaGPIO).to receive(:new).with(pin, YaGPIO::INPUT).and_return(gpio)
+		expect(gpio).to receive(:set_interrupt).with(YaGPIO::EDGE_FALLING)
+		expect(seesaw).to receive(:write).with(16, 2, 1)
 		allow(YaGPIO).to receive(:wait)
+
+		keypad.enable_interrupt(pin)
 		keypad.wait_for_event
 	end
 
