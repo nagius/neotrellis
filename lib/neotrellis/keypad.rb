@@ -87,6 +87,7 @@ module Neotrellis
 			@gpio.close
 		end
 
+# TODO check interrupt enabled and raise if not
 		def wait_for_event
 			YaGPIO::wait([@gpio])
 		end

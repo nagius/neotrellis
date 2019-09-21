@@ -1,7 +1,5 @@
 
-
 RSpec.describe Neotrellis::SeeSaw do
-
 	let(:dev) { '/dev/i2c-0' }
 	let(:i2c) do
 		mock = double("I2C")

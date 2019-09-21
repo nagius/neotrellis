@@ -67,6 +67,7 @@ module Neotrellis
 		end
 
 	# TODO refactor with read_raw
+	# TODO add debug message
 		def read_byte(base_reg, function_reg)
 			@i2c.read(@addr, 1, base_reg, function_reg).ord
 		end
