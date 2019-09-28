@@ -13,16 +13,16 @@ module Neotrellis
 		let(:seesaw) do
 			allow(I2C).to receive(:create).with(dev).and_return(i2c)
 
-			described_class.new(dev)
+			described_class.new()
 		end
 
-		it 'open an i2c port with default addr' do
+		it 'open an i2c port with default addr and default device' do
 			allow(I2C).to receive(:create).with(dev).and_return(i2c)
 
-			expect(SeeSaw.new(dev)).to_not be_nil
+			expect(SeeSaw.new).to_not be_nil
 		end
 
-		it 'open an i2c port with custom addr' do
+		it 'open an i2c port with custom addr and custom device' do
 			mock = double("I2C")
 			allow(I2C).to receive(:create).with(dev).and_return(mock)
 
@@ -30,7 +30,7 @@ module Neotrellis
 			expect(mock).to receive(:write).with(0x2E, 0, 0x7F, 0xFF)
 			expect(mock).to receive(:read).with(0x2E, 1, 0, 1).and_return("\x55")
 
-			SeeSaw.new(dev, 0x2E)
+			SeeSaw.new(device: dev, addr: 0x2E)
 		end
 
 		it 'do a sucessful software reset' do

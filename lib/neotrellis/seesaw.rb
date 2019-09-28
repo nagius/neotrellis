@@ -10,7 +10,6 @@
 # TODO read_raw en private
 
 require 'i2c'
-require 'pp'
 
 # Helper to display hex number as string
 class Numeric
@@ -33,10 +32,7 @@ module Neotrellis
 		STATUS_HW_ID = 0x01
 		STATUS_VERSION = 0x02
 
-	# TODO arguments nommer
-		def initialize(device, addr = DEFAULT_I2C_ADDR, debug: false)
-		# TOD ogetino erreru
-
+		def initialize(device: '/dev/i2c-0', addr: DEFAULT_I2C_ADDR, debug: false)
 			@i2c = I2C.create(device)
 			@addr = addr
 			@debug = debug
