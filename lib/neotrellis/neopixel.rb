@@ -63,30 +63,36 @@ module Neotrellis
 			show if @autoshow
 		end
 
-# TODO range check
 		class Color
-			attr_accessor :r, :g, :b
+			attr_reader :r, :g, :b
 
+			# R G B values must be between 0 and 255
 			def initialize(r, g, b)
-				@r = r
-				@g = g
-				@b = b
+				@r = within_range(r)
+				@g = within_range(g)
+				@b = within_range(b)
 			end
 
 			def to_b(brightness = 1.0)
 				# Order is GRB
 				[(@g*brightness).to_i, (@r*brightness).to_i, (@b*brightness).to_i]
 			end
+
+			private
+
+			def within_range(byte)
+				[[byte, 0].max, 255].min
+			end
 		end
 
-	# TODO faire mieux
-		OFF = Color.new(0, 0, 0)
-		RED = Color.new(255, 0, 0)
-		YELLOW = Color.new(255, 150, 0)
-		GREEN = Color.new(0, 255, 0)
-		CYAN = Color.new(0, 255, 255)
-		BLUE = Color.new(0, 0, 255)
-		PURPLE = Color.new(180, 0, 255)
+		# Default common colors
+		OFF 	= Color.new(0, 0, 0)
+		RED 	= Color.new(255, 0, 0)
+		YELLOW 	= Color.new(255, 150, 0)
+		GREEN 	= Color.new(0, 255, 0)
+		CYAN 	= Color.new(0, 255, 255)
+		BLUE 	= Color.new(0, 0, 255)
+		PURPLE 	= Color.new(180, 0, 255)
 	end
 end
 

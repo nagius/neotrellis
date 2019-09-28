@@ -12,7 +12,7 @@ module Neotrellis
 			described_class.new(seesaw, autoshow: false)
 		end
 
-		it 'instanciate with default number of pixel' do
+		it 'instanciate with default number of pixel (16)' do
 			expect(neopixel).to_not be_nil
 		end
 
@@ -63,12 +63,21 @@ module Neotrellis
 			end
 			neopixel.fill(NeoPixel::GREEN)
 		end
+	end
 
-		it 'create a new color' do
+	RSpec.describe NeoPixel::Color do
+		it 'create a new color within range' do
 			color = NeoPixel::Color.new(128, 234, 98)
 			expect(color.r).to eq(128)
 			expect(color.g).to eq(234)
 			expect(color.b).to eq(98)
+		end
+
+		it 'create a new color outside range' do
+			color = NeoPixel::Color.new(256, 28, -12)
+			expect(color.r).to eq(255)
+			expect(color.g).to eq(28)
+			expect(color.b).to eq(0)
 		end
 
 		it 'create a new color with brightness' do
