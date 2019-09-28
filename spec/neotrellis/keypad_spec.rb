@@ -15,18 +15,18 @@ module Neotrellis
 			expect(keypad.count_events).to eq 2
 		end
 
-		it 'raise if set a wrong action' do
-			expect{keypad.set_event(1, "wrongaction", true)}.to raise_error(RuntimeError)
+		it 'raise if set a wrong event' do
+			expect{keypad.set_event(1, event: "wrongevent", enabled: true)}.to raise_error(RuntimeError)
 		end
 
 		it 'enable an event callback' do
 			expect(seesaw).to receive(:write).with(16, 1, 1, 17)
-			keypad.set_event(1, Keypad::KEY_PRESSED, true) {}
+			keypad.set_event(1, event: Keypad::KEY_PRESSED) {}
 		end
 
 		it 'disable an event callback' do
 			expect(seesaw).to receive(:write).with(16, 1, 1, 8)
-			keypad.set_event(1, Keypad::KEY_RELEASED, false) {}
+			keypad.set_event(1, event: Keypad::KEY_RELEASED, enabled: false) {}
 		end
 
 		it 'sync with no events' do
@@ -47,7 +47,7 @@ module Neotrellis
 
 			# Key one
 			expect(seesaw).to receive(:write).with(16, 1, 0, 9)
-			keypad.set_event(0, Keypad::KEY_RELEASED, true) do |event|
+			keypad.set_event(0, event: Keypad::KEY_RELEASED, enabled: true) do |event|
 				callback_count2 += 1
 				expect(event.key).to eq 0
 				expect(event.edge).to eq Keypad::KEY_RELEASED
@@ -55,7 +55,7 @@ module Neotrellis
 
 			# Key two
 			expect(seesaw).to receive(:write).with(16, 1, 1, 17)
-			keypad.set_event(1, Keypad::KEY_PRESSED, true) do |event|
+			keypad.set_event(1, event: Keypad::KEY_PRESSED, enabled: true) do |event|
 				callback_count1 += 1
 				expect(event.key).to eq 1
 				expect(event.edge).to eq Keypad::KEY_PRESSED

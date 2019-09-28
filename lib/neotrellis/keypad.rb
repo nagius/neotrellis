@@ -1,5 +1,4 @@
 
-# TODO renommer EDGE_* en KEY_PRESSED
 # TODO doc avec event et sans event
 
 # TODO verifier assert boolean
@@ -7,7 +6,6 @@
 # Check function a passer en private 
 
 require 'ya_gpio'
-
 
 module Neotrellis
 	class Keypad
@@ -38,20 +36,17 @@ module Neotrellis
 			@seesaw.read_byte(KEYPAD_BASE, KEYPAD_COUNT)
 		end
 
-
-	# TODO enable en param nommee
-		def set_event(key, action, enable, &block)
-			raise "action must be one of KEY_PRESSED, KEY_RELEASED" unless [KEY_PRESSED, KEY_RELEASED].include? action
-			raise "enable must be a boolean" unless [true, false].include? enable
+		def set_event(key, event:, enabled: true, &block)
+			raise "event must be one of KEY_PRESSED, KEY_RELEASED" unless [KEY_PRESSED, KEY_RELEASED].include? event
+			raise "enabled must be a boolean" unless [true, false].include? enabled
 
 			# Convert data to SeeSaw's binary registers
 			key_b = (key/4)*8 + (key%4)
-			edge_b = (1 << (action+1)) | ( enable ? 1 : 0 )
+			edge_b = (1 << (event+1)) | ( enabled ? 1 : 0 )
 
 			@seesaw.write(KEYPAD_BASE, KEYPAD_EVENT, key_b, edge_b)
-			@callbacks[KeyEvent.new(key, action)] = block
+			@callbacks[KeyEvent.new(key, event)] = block
 		end
-
 
 		def sync
 			count = count_events()
@@ -61,7 +56,6 @@ module Neotrellis
 				end
 			end
 		end
-
 
 		# pin are in the BCM numbering, as reported by Sysfs
 		def enable_interrupt(pin)
