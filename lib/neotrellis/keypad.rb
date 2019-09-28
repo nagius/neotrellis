@@ -22,14 +22,19 @@ require 'ya_gpio'
 
 module Neotrellis
 	class Keypad
-		KEYPAD_BASE = 0x10
 
-		KEYPAD_STATUS = 0x00
-		KEYPAD_EVENT = 0x01
-		KEYPAD_INTENSET = 0x02
-		KEYPAD_INTENCLR = 0x03
-		KEYPAD_COUNT = 0x04
-		KEYPAD_FIFO = 0x10
+		private
+			# Internal SeeSaw registers
+			KEYPAD_BASE = 0x10
+
+			KEYPAD_STATUS = 0x00
+			KEYPAD_EVENT = 0x01
+			KEYPAD_INTENSET = 0x02
+			KEYPAD_INTENCLR = 0x03
+			KEYPAD_COUNT = 0x04
+			KEYPAD_FIFO = 0x10
+
+		public
 
 		KEY_HIGH = 0
 		KEY_LOW = 1

@@ -93,7 +93,6 @@ module Neotrellis
 
 		private
 
-
 		def read_raw(size, base_reg, function_reg)
 			data = @i2c.read(@addr, size, base_reg, function_reg)
 			puts "DEBUG: I2C READ: %02X %02X %s" % [base_reg, function_reg, data.unpack("C#{size}").map{|i| "%02X" % [i]}.join(' ')] if @debug
