@@ -15,8 +15,21 @@ module Neotrellis
 	# :param String device: Linux I2C-dev file the SeeSaw is connected to
 	# :param Integer addr: I2C address of the SeeSaw device
 	class SeeSaw
-		# Default SeeSaw I2C address is 0x49
-		DEFAULT_I2C_ADDR = 0x49
+
+		DEFAULT_I2C_ADDR = 0x49  # Default SeeSaw I2C address is 0x49
+
+		private
+			# SeeSaw hardware ID
+			HW_ID_CODE = 0x55
+
+			# Internal SeeSaw registers
+			STATUS_BASE = 0x00
+			STATUS_SWRST = 0x7F
+			STATUS_HW_ID = 0x01
+			STATUS_VERSION = 0x02
+
+		public
+
 		def initialize(device: '/dev/i2c-0', addr: DEFAULT_I2C_ADDR, debug: false)
 			@i2c = I2C.create(device)
 			@addr = addr
@@ -63,14 +76,6 @@ module Neotrellis
 
 		private
 
-		# SeeSaw hardware ID
-		HW_ID_CODE = 0x55
-
-		# Internal SeeSaw registers
-		STATUS_BASE = 0x00
-		STATUS_SWRST = 0x7F
-		STATUS_HW_ID = 0x01
-		STATUS_VERSION = 0x02
 
 		def read_raw(size, base_reg, function_reg)
 			data = @i2c.read(@addr, size, base_reg, function_reg)

@@ -6,20 +6,23 @@ module Neotrellis
 
 		DEFAULT_PIXEL_NUMBER = 16
 
-		NEOPIXEL_BASE = 0x0E
+		private
 
-		NEOPIXEL_STATUS = 0x00
-		NEOPIXEL_PIN = 0x01
-		NEOPIXEL_SPEED = 0x02
-		NEOPIXEL_BUF_LENGTH = 0x03
-		NEOPIXEL_BUF = 0x04
-		NEOPIXEL_SHOW = 0x05
+			NEOPIXEL_BASE = 0x0E
 
-	# TODO argument nommer
-		def initialize(seesaw, n = DEFAULT_PIXEL_NUMBER, autoshow = true, brightness = 1.0)
+			NEOPIXEL_STATUS = 0x00
+			NEOPIXEL_PIN = 0x01
+			NEOPIXEL_SPEED = 0x02
+			NEOPIXEL_BUF_LENGTH = 0x03
+			NEOPIXEL_BUF = 0x04
+			NEOPIXEL_SHOW = 0x05
+
+		public
+
+		def initialize(seesaw, size: DEFAULT_PIXEL_NUMBER, autoshow: true, brightness: 1.0)
 			@seesaw = seesaw
-			@pin = 3				# NeoPixels are on SeeSaw's pin 3 
-			@n = n 					# Number of NeoPixels on the bus
+			@pin = 3				# NeoPixel bus is on SeeSaw's pin 3
+			@n = size 				# Number of NeoPixels on the bus
 			@bpp = 3				# 3 bytes per pixel
 			@autoshow = autoshow	# Automaticaly display data in buffer
 			@brightness = [[brightness, 0.0].max, 1.0].min

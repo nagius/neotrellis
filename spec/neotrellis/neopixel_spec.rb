@@ -9,7 +9,7 @@ module Neotrellis
 		let(:neopixel) do
 			expect(seesaw).to receive(:write).once.with(14, 1, 3)
 			expect(seesaw).to receive(:write).once.with(14, 3, 0, 48)
-			described_class.new(seesaw, 16, false)
+			described_class.new(seesaw, autoshow: false)
 		end
 
 		it 'instanciate with default number of pixel' do
@@ -20,7 +20,7 @@ module Neotrellis
 			expect(seesaw).to receive(:write).once.with(14, 1, 3)
 			expect(seesaw).to receive(:write).once.with(14, 3, 0, 96)
 
-			described_class.new(seesaw, 32)
+			described_class.new(seesaw, size: 32)
 		end
 
 		it 'set brightness within range' do
