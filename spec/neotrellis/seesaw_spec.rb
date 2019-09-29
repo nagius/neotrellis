@@ -1,5 +1,5 @@
 module Neotrellis
-	RSpec.describe SeeSaw do
+	RSpec.describe Seesaw do
 		let(:dev) { '/dev/i2c-0' }
 		let(:i2c) do
 			mock = double("I2C")
@@ -19,7 +19,7 @@ module Neotrellis
 		it 'open an i2c port with default addr and default device' do
 			allow(I2C).to receive(:create).with(dev).and_return(i2c)
 
-			expect(SeeSaw.new).to_not be_nil
+			expect(Seesaw.new).to_not be_nil
 		end
 
 		it 'open an i2c port with custom addr and custom device' do
@@ -30,7 +30,7 @@ module Neotrellis
 			expect(mock).to receive(:write).with(0x2E, 0, 0x7F, 0xFF)
 			expect(mock).to receive(:read).with(0x2E, 1, 0, 1).and_return("\x55")
 
-			SeeSaw.new(device: dev, addr: 0x2E)
+			Seesaw.new(device: dev, addr: 0x2E)
 		end
 
 		it 'do a sucessful software reset' do

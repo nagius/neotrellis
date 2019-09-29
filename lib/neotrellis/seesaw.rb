@@ -31,7 +31,7 @@ end
 module Neotrellis
 	# Driver for Seesaw i2c generic conversion chip.
 	# See https://www.adafruit.com/product/3657 for example board.
-	class SeeSaw
+	class Seesaw
 
 		DEFAULT_I2C_ADDR = 0x49  # Default SeeSaw I2C address
 

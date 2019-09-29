@@ -22,9 +22,9 @@
 # Neotrellis is a ruby driver for Adafruit's NeoTrellis keypad
 module Neotrellis
 
-	# NeoPixel is the driver of the RGB led array on the Neotrellis device.
+	# Neopixel is the driver of the RGB led array on the Neotrellis device.
 	# TODO examples
-	class NeoPixel
+	class Neopixel
 		attr_reader :brightness   # Get the brightness of the leds.
 		attr_accessor :autoshow   # Enable autoshow feature. Automatically call `show()` after each update.
 
@@ -77,7 +77,7 @@ module Neotrellis
 		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
 		#
 		# @param pixel [Integer] ID of the pixel in the array. Must be between 0 and `size`-1
-		# @param color [Neotrellis::NeoPixel::Color] Color to display by the pixel
+		# @param color [Neotrellis::Neopixel::Color] Color to display by the pixel
 		def set(pixel, color)
 			raise "pixel out of range" unless pixel.between?(0, @n-1)
 
@@ -94,7 +94,7 @@ module Neotrellis
 		# Set the same color for all pixels of the array.
 		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
 		#
-		# @param color [Neotrellis::NeoPixel::Color] Color to display by the pixels
+		# @param color [Neotrellis::Neopixel::Color] Color to display by the pixels
 		def fill(color)
 			# Disable auto show while filling the buffer
 			current_autoshow = @autoshow

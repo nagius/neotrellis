@@ -1,6 +1,6 @@
 module Neotrellis
 
-	RSpec.describe NeoPixel do
+	RSpec.describe Neopixel do
 
 		let(:seesaw) do
 			double("SeeSaw")
@@ -38,18 +38,18 @@ module Neotrellis
 
 		it 'set pixel within range' do
 			expect(seesaw).to receive(:write).with(14, 4, 0, 9, 0, 255, 0)
-			neopixel.set(3, NeoPixel::RED)
+			neopixel.set(3, Neopixel::RED)
 		end
 
 		it 'set pixel outside range' do
-			expect{neopixel.set(17, NeoPixel::PURPLE)}.to raise_error(RuntimeError)
+			expect{neopixel.set(17, Neopixel::PURPLE)}.to raise_error(RuntimeError)
 		end
 
 		it 'set pixel with autoshow' do
 			neopixel.autoshow = true
 			expect(seesaw).to receive(:write).with(14, 4, 0, 9, 0, 0, 255)
 			expect(seesaw).to receive(:write).with(14, 5)
-			neopixel.set(3, NeoPixel::BLUE)
+			neopixel.set(3, Neopixel::BLUE)
 		end
 
 		it 'flush buffer' do
@@ -61,27 +61,27 @@ module Neotrellis
 			16.times do |i|
 				expect(seesaw).to receive(:write).with(14, 4, 0, i*3, 255, 0, 0)
 			end
-			neopixel.fill(NeoPixel::GREEN)
+			neopixel.fill(Neopixel::GREEN)
 		end
 	end
 
-	RSpec.describe NeoPixel::Color do
+	RSpec.describe Neopixel::Color do
 		it 'create a new color within range' do
-			color = NeoPixel::Color.new(128, 234, 98)
+			color = Neopixel::Color.new(128, 234, 98)
 			expect(color.r).to eq(128)
 			expect(color.g).to eq(234)
 			expect(color.b).to eq(98)
 		end
 
 		it 'create a new color outside range' do
-			color = NeoPixel::Color.new(256, 28, -12)
+			color = Neopixel::Color.new(256, 28, -12)
 			expect(color.r).to eq(255)
 			expect(color.g).to eq(28)
 			expect(color.b).to eq(0)
 		end
 
 		it 'create a new color with brightness' do
-			color = NeoPixel::Color.new(128, 234, 98)
+			color = Neopixel::Color.new(128, 234, 98)
 			expect(color.to_b(0.5)).to eq([117, 64, 49])
 		end
 	end
