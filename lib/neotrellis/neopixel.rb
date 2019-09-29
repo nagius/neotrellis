@@ -18,12 +18,17 @@
 #
 ###########################################################################
 
-module Neotrellis
-	class NeoPixel
-		attr_reader :brightness
-		attr_accessor :autoshow
 
-		DEFAULT_PIXEL_NUMBER = 16
+# Neotrellis is a ruby driver for Adafruit's NeoTrellis keypad
+module Neotrellis
+
+	# NeoPixel is the driver of the RGB led array on the Neotrellis device.
+	# TODO examples
+	class NeoPixel
+		attr_reader :brightness   # Get the brightness of the leds.
+		attr_accessor :autoshow   # Enable autoshow feature. Automatically call `show()` after each update.
+
+		DEFAULT_PIXEL_NUMBER = 16 # Default number of leds on the neotrellis 4x4 keypad
 
 		private
 
@@ -38,6 +43,12 @@ module Neotrellis
 
 		public
 
+		# Initialize a neopixel array driven by a seesaw chip.
+		#
+		# @param seesaw [Neotrellis::SeeSaw] Seesaw driver
+		# @param size [Integer] Number of leds on the array
+		# @param autoshow [Boolean] Automatically call `show()` after each update
+		# @param brightness [Float] Brightness of the leds. Must be between 0.0 and 1.0
 		def initialize(seesaw, size: DEFAULT_PIXEL_NUMBER, autoshow: true, brightness: 1.0)
 			@seesaw = seesaw
 			@pin = 3				# NeoPixel bus is on SeeSaw's pin 3
@@ -53,10 +64,20 @@ module Neotrellis
 			@seesaw.write(NEOPIXEL_BASE, NEOPIXEL_BUF_LENGTH, *buf_length)
 		end
 
+		# Set the brightness of the leds
+		#
+		# @param brightness [Float] Brightness of the leds. Must be between 0.0 and 1.0
+		#
+		# @return [Float] New brightness value
 		def brightness=(brightness)
 			@brightness = [[brightness, 0.0].max, 1.0].min
 		end
 
+		# Set the color of one pixel.
+		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
+		#
+		# @param pixel [Integer] ID of the pixel in the array. Must be between 0 and `size`-1
+		# @param color [Neotrellis::NeoPixel::Color] Color to display by the pixel
 		def set(pixel, color)
 			raise "pixel out of range" unless pixel.between?(0, @n-1)
 
@@ -64,11 +85,16 @@ module Neotrellis
 			show if @autoshow
 		end
 
-		# Display data in buffer
+		# Render the data already written in the Seesaw buffer.
+		# If `autoshow` is true, this method is called automatically by `set()` and `fill()`
 		def show
 			@seesaw.write(NEOPIXEL_BASE, NEOPIXEL_SHOW)
 		end
 
+		# Set the same color for all pixels of the array.
+		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
+		#
+		# @param color [Neotrellis::NeoPixel::Color] Color to display by the pixels
 		def fill(color)
 			# Disable auto show while filling the buffer
 			current_autoshow = @autoshow
@@ -82,16 +108,27 @@ module Neotrellis
 			show if @autoshow
 		end
 
+		# Define a color to be set on a pixel
 		class Color
-			attr_reader :r, :g, :b
+			attr_reader :r, :g, :b  # R G B components
 
+			# Create a new color.
 			# R G B values must be between 0 and 255
+			#
+			# @param r [Integer] Red component
+			# @param g [Integer] Green component
+			# @param b [Integer] Blue component
 			def initialize(r, g, b)
 				@r = within_range(r)
 				@g = within_range(g)
 				@b = within_range(b)
 			end
 
+			# Apply a brightness to the color.
+			#
+			# @param brightness [Float] Brightness of the color. Must be between 0.0 and 1.0
+			#
+			# @return [Array] Color values as integer in the order GRB
 			def to_b(brightness = 1.0)
 				# Order is GRB
 				[(@g*brightness).to_i, (@r*brightness).to_i, (@b*brightness).to_i]
