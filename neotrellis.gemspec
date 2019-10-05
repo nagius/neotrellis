@@ -8,8 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Nicolas AGIUS"]
   spec.email         = ["nicolas.agius@lps-it.fr"]
 
-  spec.summary       = %q{TO DO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TO DO: Write a longer description or delete this line.}
+  spec.summary       = %q{Neotrellis is a ruby driver for Adafruit's NeoTrellis keypad.}
   spec.homepage      = "https://github.com/nagius/neotrellis"
 
   spec.metadata["homepage_uri"] = spec.homepage

@@ -23,7 +23,26 @@
 module Neotrellis
 
 	# Neopixel is the driver of the RGB led array on the Neotrellis device.
-	# TODO examples
+	#
+	# @example Turn on led #2 in red for 2 seconds with debug output
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E, debug: true)
+	#   pixels = Neotrellis::Neopixel.new(seesaw)
+	#   pixels.set(1, Neotrellis::Neopixel::RED)
+	#   sleep 2
+	#   pixels.set(1, Neotrellis::Neopixel::OFF)
+	#
+	# @example Turn on all leds with color #b5f115
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
+	#   pixels = Neotrellis::Neopixel.new(seesaw)
+	#   pixels.fill(Neotrellis::Neopixel::Color.new(181, 241, 21))
+	#
+	# @example Display white columns
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
+	#   pixels = Neotrellis::Neopixel.new(seesaw, autoshow: false)
+	#   Neotrellis::Neopixel::DEFAULT_PIXEL_NUMBER.times { |i|
+	#   	pixels.set(i, Neotrellis::Neopixel::WHITE) unless i%2 == 0
+	#   }
+	#   pixels.show
 	class Neopixel
 		attr_reader :brightness   # Get the brightness of the leds.
 		attr_accessor :autoshow   # Enable autoshow feature. Automatically call `show()` after each update.

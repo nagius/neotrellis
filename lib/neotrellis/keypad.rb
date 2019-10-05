@@ -22,7 +22,37 @@ require 'ya_gpio'
 
 module Neotrellis
 	# Driver for the Neotrellis 4x4 keypad.
-	# TODO examples
+	#
+	# @example Print a message when key #3 is pressed
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
+	#   keypad = Neotrellis::Keypad.new(seesaw)
+	#   keypad.set_event(2, event: Neotrellis::Keypad::KEY_PRESSED) { |event|
+	#   	puts "Key #{event.key} pressed"
+	#	}
+	#   loop do
+	#   	sleep(1)
+	#   	puts "Processing pending events"
+	#   	keypad.sync
+	#   end
+	#
+	# @example Print a message when key #3 is released using interruption on GPIO pin 22
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
+	#   keypad = Neotrellis::Keypad.new(seesaw)
+	#   keypad.set_event(2, event: Neotrellis::Keypad::KEY_RELEASED) { |event|
+	#   	puts "Key #{event.key}"
+	#		puts event.edge == Neotrellis::Keypad::KEY_PRESSED ? "pressed" : "released"
+	#	}
+	#   keypad.enable_interrupt(22)
+	#   keypad.wait_for_event
+	#
+	# @example Stop waiting for events when key #4 is pressed
+	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
+	#   keypad = Neotrellis::Keypad.new(seesaw, interrupt_pin: 22)
+	#   keypad.set_event(3, event: Neotrellis::Keypad::KEY_PRESSED) {
+	#   	keypad.resume
+	#	}
+	#   keypad.wait_for_event
+	#   puts "loop ended"
 	class Keypad
 
 		private
