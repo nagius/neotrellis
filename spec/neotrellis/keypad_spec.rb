@@ -69,6 +69,25 @@ module Neotrellis
 			expect(callback_count2).to eq 1
 		end
 
+		it 'sync with one event configured on both edges' do
+			callback_count = 0
+
+			expect(seesaw).to receive(:write).with(16, 1, 0, 17)
+			expect(seesaw).to receive(:write).with(16, 1, 0, 9)
+			keypad.set_event(0, event: Keypad::KEY_BOTH) do |event|
+				callback_count += 1
+				expect(event.key).to eq 0
+				expect(event.edge).to eq Keypad::KEY_PRESSED if callback_count == 1
+				expect(event.edge).to eq Keypad::KEY_RELEASED if callback_count == 2
+			end
+
+			expect(seesaw).to receive(:read_byte).with(16, 4).and_return(1)
+			expect(seesaw).to receive(:read_bytes).with(1, 16, 16).and_return([03, 02])
+			keypad.sync
+
+			expect(callback_count).to eq 2
+		end
+
 		it 'enable then disable interrupt' do
 			allow(YaGPIO).to receive(:new).with(pin, YaGPIO::INPUT).and_return(gpio)
 			expect(gpio).to receive(:set_interrupt).with(YaGPIO::EDGE_FALLING)

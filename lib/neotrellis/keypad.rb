@@ -72,6 +72,7 @@ module Neotrellis
 		KEY_LOW = 1      # Key is released
 		KEY_RELEASED = 2 # Key is falling edge
 		KEY_PRESSED = 3  # Key is rising edge
+		KEY_BOTH = 4     # Key is rising edge or falling edge
 
 		# Initialize the keypad driven by a Seesaw chip.
 		#
@@ -96,19 +97,24 @@ module Neotrellis
 		# Register a callback to execute when a key's event is processed.
 		#
 		# @param key [Integer] ID of the key. Must be between 0 and 15 (for the 4x4 keypad)
-		# @param event [Neotrellis::Keypad::KEY_PRESSED|Neotrellis::Keypad::KEY_RELEASED] Type of event to react to.
+		# @param event [Neotrellis::Keypad::KEY_PRESSED|Neotrellis::Keypad::KEY_RELEASED|Neotrellis::Keypad::KEY_BOTH] Type of event to react to.
 		# @param enabled [Boolean] If false, the callback will be disabled.
 		# @param block [Block] Code to execute when the event is trigerred. A Neotrellis::Keypad::KeyEvent will be passed as argument to the block.
-		def set_event(key, event:, enabled: true, &block)
-			raise "event must be one of KEY_PRESSED, KEY_RELEASED" unless [KEY_PRESSED, KEY_RELEASED].include? event
-			raise "enabled must be a boolean" unless [true, false].include? enabled
+		def set_event(key, event: KEY_BOTH, enabled: true, &block)
+			if event == KEY_BOTH
+				set_event(key, event: KEY_PRESSED, enabled: enabled, &block)
+				set_event(key, event: KEY_RELEASED, enabled: enabled, &block)
+			else
+				raise "event must be one of KEY_PRESSED, KEY_RELEASED" unless [KEY_PRESSED, KEY_RELEASED].include? event
+				raise "enabled must be a boolean" unless [true, false].include? enabled
 
-			# Convert data to SeeSaw's binary registers
-			key_b = (key/4)*8 + (key%4)
-			edge_b = (1 << (event+1)) | ( enabled ? 1 : 0 )
+				# Convert data to SeeSaw's binary registers
+				key_b = (key/4)*8 + (key%4)
+				edge_b = (1 << (event+1)) | ( enabled ? 1 : 0 )
 
-			@seesaw.write(KEYPAD_BASE, KEYPAD_EVENT, key_b, edge_b)
-			@callbacks[KeyEvent.new(key, event)] = block
+				@seesaw.write(KEYPAD_BASE, KEYPAD_EVENT, key_b, edge_b)
+				@callbacks[KeyEvent.new(key, event)] = block
+			end
 		end
 
 		# Trigger the callback for each event waiting to be processed.

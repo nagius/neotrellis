@@ -83,20 +83,13 @@ seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
 keypad = Neotrellis::Keypad.new(seesaw, interrupt_pin: 22)
 pixels = Neotrellis::Neopixel.new(seesaw)
 
-def do_stuff(event, pixels)
-  if event.edge == Neotrellis::Keypad::KEY_PRESSED
-    pixels.set(event.key, Neotrellis::Neopixel::Color.new(rand(255), rand(255), rand(255)))
-  else
-    pixels.set(event.key, Neotrellis::Neopixel::OFF)
-  end
-end
-
-Neotrellis::Neopixel::DEFAULT_PIXEL_NUMBER.times do |i|
-  keypad.set_event(i, event: Neotrellis::Keypad::KEY_PRESSED) do |event|
-        do_stuff(event, pixels)
-  end
-  keypad.set_event(i, event: Neotrellis::Keypad::KEY_RELEASED) do |event|
-        do_stuff(event, pixels)
+Neotrellis::Neopixel::DEFAULT_PIXEL_NUMBER.times do |key|
+  keypad.set_event(key) do |event|
+    if event.edge == Neotrellis::Keypad::KEY_PRESSED
+      pixels.set(event.key, Neotrellis::Neopixel::Color.new(rand(255), rand(255), rand(255)))
+    else
+      pixels.set(event.key, Neotrellis::Neopixel::OFF)
+    end
   end
 end
 keypad.wait_for_event
