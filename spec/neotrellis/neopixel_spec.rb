@@ -63,6 +63,20 @@ module Neotrellis
 			end
 			neopixel.fill(Neopixel::GREEN)
 		end
+
+		it 'fill all buffer with randoms colors' do
+			16.times do |i|
+				expect(seesaw).to receive(:write).with(14, 4, 0, i*3, any_args)
+			end
+			neopixel.fill_random()
+		end
+
+		it 'switch off all pixels' do
+			16.times do |i|
+				expect(seesaw).to receive(:write).with(14, 4, 0, i*3, 0, 0, 0)
+			end
+			neopixel.off
+		end
 	end
 
 	RSpec.describe Neopixel::Color do

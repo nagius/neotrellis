@@ -31,10 +31,12 @@ module Neotrellis
 	#   sleep 2
 	#   pixels.set(1, Neotrellis::Neopixel::OFF)
 	#
-	# @example Turn on all leds with color #b5f115
+	# @example Turn on all leds with color #b5f115 for 2 seconds
 	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
 	#   pixels = Neotrellis::Neopixel.new(seesaw)
 	#   pixels.fill(Neotrellis::Neopixel::Color.new(181, 241, 21))
+	#   sleep 2
+	#   pixels.off
 	#
 	# @example Display white columns
 	#   seesaw = Neotrellis::Seesaw.new(device: "/dev/i2c-1", addr: 0x2E)
@@ -127,6 +129,27 @@ module Neotrellis
 			show if @autoshow
 		end
 
+		# Set a different random color for every pixels of the array.
+		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
+		def fill_random()
+			# Disable auto show while filling the buffer
+			current_autoshow = @autoshow
+			@autoshow=false
+
+			@n.times do |pixel|
+				set(pixel, Color.new(rand(255), rand(255), rand(255)))
+			end
+
+			@autoshow = current_autoshow
+			show if @autoshow
+		end
+
+		# Swtich off all pixels of the array.
+		# If `autoshow` is false nothing will be displayed until you call the `show()` method.
+		def off()
+			fill(OFF)
+		end
+
 		# Define a color to be set on a pixel
 		class Color
 			attr_reader :r, :g, :b  # R G B components
@@ -168,6 +191,7 @@ module Neotrellis
 		CYAN 	= Color.new(0, 255, 255)
 		BLUE 	= Color.new(0, 0, 255)
 		PURPLE 	= Color.new(180, 0, 255)
+		WHITE   = Color.new(255, 255, 255)
 	end
 end
 
