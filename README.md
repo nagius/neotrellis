@@ -2,17 +2,17 @@
 
 Neotrellis is a ruby driver for Adafruit's NeoTrellis keypad. This device uses an I2C bus to control both the keypad and the RGB led array.
 
-[Neotrelliis](datasheets/neotrellis.jpg)
+![Neotrellis](datasheets/neotrellis.jpg)
 
 See https://www.adafruit.com/product/3954 for more details on this device.
 
 This ruby gem is mainly compose of two classes :
- - Neotrellis::Neopixels to control the leds behind each keys.
- - Neotrellis::Keypad to execute code when a key is pressed or released on the keypad
+ - `Neotrellis::Neopixels` to control the leds behind each keys.
+ - `Neotrellis::Keypad` to execute code when a key is pressed or released on the keypad.
 
 The Keypad class provide two modes to react to key events: using pooling with a loop or using interruption handler. The pooling mode require only the I2C communication to be set up. For the interruption mode to work, the pin INT on the keypad need to be connected to a GPIO input supporting hardware interruption on your computer. A common use case are the pins 15 or 16 of the Raspberry Pi GPIO header. See Raspberry Pi documentation for more details.
 
-The support of hardware interruption is done by the [YaGPIO](https://github.com/nagius/ya_gpio) gem based on Sysfs interface. It has been designed for Raspberry Pi but should work with any GPIO systems supported by the Sysfs kernel driver.
+The support of hardware interruptions is done by the [YaGPIO](https://github.com/nagius/ya_gpio) gem based on the Sysfs interface. It has been designed for Raspberry Pi but should work with any GPIO systems supported by the Sysfs kernel driver.
 
 ## Installation
 
@@ -34,7 +34,7 @@ Or install it yourself as:
 
 We will suppose here that you are using a Rasberry Pi B+ to control the Neotrellis device. Adapt the I2C device name and pin numbers for other boards.
 
-First, connect the pins SDA and SLC of the keypad to GPIO pins 3 and 5. The device will appear on the second I2C bus of the Raspberry Pi `/dev/i2c-1`. Te I2C port need to be enabled in the linux kenel to operate. Refer to Raspberry Pi documentation to do so.
+First, connect the pins SDA and SLC of the keypad to GPIO pins 3 and 5. The device will appear on the second I2C bus of the Raspberry Pi `/dev/i2c-1`. The I2C port need to be enabled in the linux kernel to operate. Refer to Raspberry Pi documentation to do so.
 
 If you want to use the interruption mode also connect the INT pin to the GPIO pin 15 (GPIO22).
 
