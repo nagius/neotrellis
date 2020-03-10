@@ -91,7 +91,11 @@ module Neotrellis
 		#
 		# @return [Integer] Number of events
 		def count_events
-			@seesaw.read_byte(KEYPAD_BASE, KEYPAD_COUNT)
+			begin
+				@seesaw.read_byte(KEYPAD_BASE, KEYPAD_COUNT)
+			rescue ReadError
+				0
+			end
 		end
 
 		# Register a callback to execute when a key's event is processed.

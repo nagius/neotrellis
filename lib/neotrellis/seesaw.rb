@@ -96,8 +96,12 @@ module Neotrellis
 		# @param function_reg [Byte] Function register address
 		#
 		# @return [Byte] Value read in the given register
+		# @raise [ReadError] If no data is returned form the underlying I2C device
 		def read_byte(base_reg, function_reg)
-			read_raw(1, base_reg, function_reg).ord
+			data = read_raw(1, base_reg, function_reg)
+			raise ReadError, "No data" if data.nil?
+
+			data.ord
 		end
 
 		# Read bytes from a Seesaw register

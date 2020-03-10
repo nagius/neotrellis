@@ -15,6 +15,11 @@ module Neotrellis
 			expect(keypad.count_events).to eq 2
 		end
 
+		it 'count events with read error' do
+			expect(seesaw).to receive(:read_byte).with(16, 4).and_raise(ReadError)
+			expect(keypad.count_events).to eq 0
+		end
+
 		it 'raise if set a wrong event' do
 			expect{keypad.set_event(1, event: "wrongevent", enabled: true)}.to raise_error(RuntimeError)
 		end
