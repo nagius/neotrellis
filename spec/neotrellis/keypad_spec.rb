@@ -34,14 +34,21 @@ module Neotrellis
 			keypad.set_event(1, event: Keypad::KEY_RELEASED, enabled: false) {}
 		end
 
-		it 'sync with no events' do
+		it 'sync with no event' do
 			expect(seesaw).to receive(:read_byte).with(16, 4).and_return(0)
 			keypad.sync
 		end
 
-		it 'sync with one unconfigured events' do
+		it 'sync with one unconfigured event' do
 			expect(seesaw).to receive(:read_byte).with(16, 4).and_return(1)
 			expect(seesaw).to receive(:read_bytes).with(1, 16, 16).and_return([03])
+
+			keypad.sync
+		end
+
+		it 'sync with one event and read error' do
+			expect(seesaw).to receive(:read_byte).with(16, 4).and_return(1)
+			expect(seesaw).to receive(:read_bytes).with(1, 16, 16).and_raise(ReadError)
 
 			keypad.sync
 		end

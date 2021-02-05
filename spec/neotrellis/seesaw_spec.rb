@@ -66,6 +66,11 @@ module Neotrellis
 			expect(i2c).to receive(:read).with(0x49, 4, 2, 3).and_return("ABCD")
 			expect(seesaw.read_bytes(4, 0x02, 0x03)).to eq [65, 66, 67, 68]
 		end
+
+		it 'read multiple bytes with an error' do
+			expect(i2c).to receive(:read).with(0x49, 4, 2, 3).and_return(nil)
+			expect{seesaw.read_bytes(4, 0x02, 0x03)}.to raise_error(ReadError)
+		end
 	end
 end
 

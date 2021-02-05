@@ -98,10 +98,7 @@ module Neotrellis
 		# @return [Byte] Value read in the given register
 		# @raise [ReadError] If no data is returned form the underlying I2C device
 		def read_byte(base_reg, function_reg)
-			data = read_raw(1, base_reg, function_reg)
-			raise ReadError, "No data" if data.nil?
-
-			data.ord
+			read_raw(1, base_reg, function_reg).ord
 		end
 
 		# Read bytes from a Seesaw register
@@ -111,6 +108,7 @@ module Neotrellis
 		# @param function_reg [Byte] Function register address
 		#
 		# @return [Array] Array of bytes read in the given register
+		# @raise [ReadError] If no data is returned form the underlying I2C device
 		def read_bytes(size, base_reg, function_reg)
 			read_raw(size, base_reg, function_reg).unpack("C#{size}")
 		end
@@ -129,8 +127,12 @@ module Neotrellis
 
 		def read_raw(size, base_reg, function_reg)
 			data = @i2c.read(@addr, size, base_reg, function_reg)
-			puts "DEBUG: I2C READ: %02X %02X %s" % [base_reg, function_reg, data.unpack("C#{size}").map{|i| "%02X" % [i]}.join(' ')] if @debug
+			if @debug
+				data_str = data.nil? ? 'nil' : data.unpack("C#{size}").map{|i| "%02X" % [i]}.join(' ')
+				puts "DEBUG: I2C READ: %02X %02X %s" % [base_reg, function_reg, data_str]
+			end
 
+			raise ReadError, "No data" if data.nil?
 			data
 		end
 

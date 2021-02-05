@@ -218,6 +218,8 @@ module Neotrellis
 
 				KeyEvent.new(key, edge)
 			end
+		rescue ReadError
+			[]
 		end
 
 		def trigger_event(event)
